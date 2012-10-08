@@ -9,16 +9,13 @@ module LocaleDetector
     protected
 
     def set_locale
-      if session[:language].present?
+      if session[:locale].present?
         # set locale from session
-        I18n.locale = session[:language]
+        I18n.locale = session[:locale]
       elsif params[:locale]
-        locale = params[:locale]
-        if I18n.available_locales.include? locale 
-          I18n.locale = params[:hl]
-          session[:language] = params[:hl]
-        else
-          I18n.locale = I18n.default_locale
+        locale = I18n.default_locale
+        I18n.locale = params[:locale] if I18n.available_locales.include? params[:locale] 
+        session[:locale] = locale
       else
         # set locale from http header or request host
         I18n.locale = begin
