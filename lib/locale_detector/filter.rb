@@ -12,6 +12,8 @@ module LocaleDetector
       if session[:language].present?
         # set locale from session
         I18n.locale = session[:language]
+      elsif params[:hl]
+        I18n.locale = params[:hl]
       else
         # set locale from http header or request host
         I18n.locale = begin
@@ -37,7 +39,18 @@ module LocaleDetector
       # http://msdn.microsoft.com/en-us/library/ms693062%28v=vs.85%29.aspx
 
       # country_code => language_code
-      mappings = {
+      
+
+      if MAPPINGS.has_key?(country_code.to_sym)
+        MAPPINGS[country_code.to_sym].to_s
+      else
+        # fall back for all other missing mappings
+        I18n.default_locale.to_s
+      end
+
+    end
+
+    MAPPINGS = {
         # English
         :au => :en,
         :ca => :en,
@@ -110,14 +123,5 @@ module LocaleDetector
         :ua => :uk,
         :vn => :vi,
       }
-
-      if mappings.has_key?(country_code.to_sym)
-        mappings[country_code.to_sym].to_s
-      else
-        # fall back for all other missing mappings
-        I18n.default_locale.to_s
-      end
-
-    end
   end
 end
