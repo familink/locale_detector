@@ -12,10 +12,10 @@ module LocaleDetector
       if session[:locale].present?
         # set locale from session
         I18n.locale = session[:locale]
-      elsif params[:locale]
+      elsif params[:locale].present?
         Rails.logger.info "No locale on session"
         string_locale = params[:locale]
-        sym_locale = params[:locale].parameterize.to_sym
+        sym_locale = params[:locale].to_sym
         Rails.logger.info "Logger on params #{{string_locale}} (#{{sym_locale}})"
         Rails.logger.info "Looking for locale in #{{I18n.available_locales}}"
         if I18n.available_locales.include? string_locale
