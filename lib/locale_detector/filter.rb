@@ -18,7 +18,7 @@ module LocaleDetector
         find_locale_and_set_cookie(params[:locale])
       else
         # set locale from http header or request host
-        I18n.locale = begin
+        possible_locale_name = begin
           request.env['HTTP_ACCEPT_LANGUAGE'].split(/\s*,\s*/).collect do |l|
             l += ';q=1.0' unless l =~ /;q=\d+\.\d+$/
             l.split(';q=')
@@ -26,6 +26,7 @@ module LocaleDetector
             raise "Incorrect format" unless x.first =~ /^[a-z\-]+$/i
             y.last.to_f <=> x.last.to_f
           end.first.first.gsub(/-[a-z]+$/i, '').downcase
+          find_locale_and_set_cookie(possible_locale_name)
         rescue # rescue (anything) from the malformed (or missing) accept language headers
           country_to_language(request.host.split('.').last)
         end
