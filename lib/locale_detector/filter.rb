@@ -30,6 +30,7 @@ module LocaleDetector
           country_to_language(request.host.split('.').last)
         end
       end
+      Rails.logger.log "Locale set to #{{I18n.locale}}"
     end
 
     # a somewhat incomplete list of toplevel domain suffix to language code mappings
