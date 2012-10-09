@@ -15,7 +15,7 @@ module LocaleDetector
       elsif params[:locale]
         locale = I18n.default_locale
         I18n.locale = params[:locale] if I18n.available_locales.include? params[:locale] 
-        session[:locale] = locale
+        #session[:locale] = locale
       else
         # set locale from http header or request host
         I18n.locale = begin
