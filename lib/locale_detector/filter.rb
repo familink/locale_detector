@@ -40,7 +40,7 @@ module LocaleDetector
       
       if I18n.available_locales.include? sym
         locale = sym
-
+      end
       I18n.locale = locale
       cookie[:locale] = locale
     end
