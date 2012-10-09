@@ -15,6 +15,7 @@ module LocaleDetector
       elsif params[:locale]
         locale = I18n.default_locale
         I18n.locale = params[:locale] if I18n.available_locales.include? params[:locale] 
+        I18n.locale = params[:locale] if I18n.available_locales.include? params[:locale].parameterize.to_sym
         #session[:locale] = locale
       else
         # set locale from http header or request host
@@ -31,6 +32,7 @@ module LocaleDetector
         end
       end
       Rails.logger.info "Locale set to #{I18n.locale}"
+      Rails.logger.info I18n.available_locales
     end
 
     # a somewhat incomplete list of toplevel domain suffix to language code mappings
