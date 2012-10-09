@@ -28,7 +28,7 @@ module LocaleDetector
           end.first.first.gsub(/-[a-z]+$/i, '').downcase
           find_locale_and_set_cookie(possible_locale_name)
         rescue # rescue (anything) from the malformed (or missing) accept language headers
-          country_to_language(request.host.split('.').last)
+          I18n.locale = country_to_language(request.host.split('.').last)
         end
       end
       Rails.logger.info "Locale set to #{I18n.locale}"
@@ -44,16 +44,8 @@ module LocaleDetector
       I18n.locale = locale
       cookie[:locale] = locale
     end
-    # a somewhat incomplete list of toplevel domain suffix to language code mappings
+
     def country_to_language(country_code)
-
-      # sources:
-      # http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains
-      # http://www.w3.org/WAI/ER/IG/ert/iso639.htm
-      # http://msdn.microsoft.com/en-us/library/ms693062%28v=vs.85%29.aspx
-
-      # country_code => language_code
-      
 
       if MAPPINGS.has_key?(country_code.to_sym)
         MAPPINGS[country_code.to_sym].to_s
