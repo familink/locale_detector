@@ -13,9 +13,21 @@ module LocaleDetector
         # set locale from session
         I18n.locale = session[:locale]
       elsif params[:locale]
-        locale = I18n.default_locale
-        I18n.locale = params[:locale] if I18n.available_locales.include? params[:locale] 
-        I18n.locale = params[:locale].parameterize.to_sym if I18n.available_locales.include? params[:locale].parameterize.to_sym
+        Rails.logger.info "No locale on session"
+        string_locale = params[:locale]
+        sym_locale = params[:locale].parameterize.to_sym
+        Rails.logger.info "Logger on params #{{string_locale}} (#{{sym_locale}})"
+        Rails.logger.info "Looking for locale in #{{I18n.available_locales}}"
+        if I18n.available_locales.include? string_locale
+          Rails.logger.info "String locale detected"
+          I18n.locale = string_locale
+        elsif I18n.available_locales.include? sym_locale
+          Rails.logger.info "Symbol locale detected"
+          I18n.locale = sym_locale
+        else
+          Rails.logger.info "Not detected"
+          I18n.locale = I18n.default_locale
+        end
         #session[:locale] = locale
       else
         # set locale from http header or request host
