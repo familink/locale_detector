@@ -12,20 +12,10 @@ module LocaleDetector
       if session[:locale].present?
         # set locale from session
         I18n.locale = session[:locale]
+      elsif cookie[:locale].present?
+        I18n.locale = cookie[:locale]
       elsif params[:locale].present?
-        Rails.logger.info "No locale on session"
-        string_locale = params[:locale]
-        sym_locale = params[:locale].to_sym
-        Rails.logger.info "Logger on params #{string_locale} (#{sym_locale})"
-        Rails.logger.info "Looking for locale in #{I18n.available_locales}"
-        if I18n.available_locales.include? sym_locale
-          Rails.logger.info "Symbol locale detected"
-          I18n.locale = sym_locale
-        else
-          Rails.logger.info "Not detected"
-          I18n.locale = I18n.default_locale
-        end
-        session[:locale] = locale
+        find_locale_and_set_cookie(params[:locale])
       else
         # set locale from http header or request host
         I18n.locale = begin
@@ -43,6 +33,16 @@ module LocaleDetector
       Rails.logger.info "Locale set to #{I18n.locale}"
     end
 
+    def find_locale_and_set_cookie(possible_locale_name)
+      sym = possible_locale_name.to_sym
+      locale = I18n.default_locale
+      
+      if I18n.available_locales.include? sym
+        locale = sym
+
+      I18n.locale = locale
+      cookie[:locale] = locale
+    end
     # a somewhat incomplete list of toplevel domain suffix to language code mappings
     def country_to_language(country_code)
 
