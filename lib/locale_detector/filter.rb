@@ -18,10 +18,7 @@ module LocaleDetector
         sym_locale = params[:locale].to_sym
         Rails.logger.info "Logger on params #{string_locale} (#{sym_locale})"
         Rails.logger.info "Looking for locale in #{I18n.available_locales}"
-        if I18n.available_locales.include? string_locale
-          Rails.logger.info "String locale detected"
-          I18n.locale = string_locale
-        elsif I18n.available_locales.include? sym_locale
+        if I18n.available_locales.include? sym_locale
           Rails.logger.info "Symbol locale detected"
           I18n.locale = sym_locale
         else
@@ -44,7 +41,6 @@ module LocaleDetector
         end
       end
       Rails.logger.info "Locale set to #{I18n.locale}"
-      Rails.logger.info I18n.available_locales
     end
 
     # a somewhat incomplete list of toplevel domain suffix to language code mappings
