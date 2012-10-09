@@ -16,8 +16,8 @@ module LocaleDetector
         Rails.logger.info "No locale on session"
         string_locale = params[:locale]
         sym_locale = params[:locale].to_sym
-        Rails.logger.info "Logger on params #{{string_locale}} (#{{sym_locale}})"
-        Rails.logger.info "Looking for locale in #{{I18n.available_locales}}"
+        Rails.logger.info "Logger on params #{string_locale} (#{sym_locale})"
+        Rails.logger.info "Looking for locale in #{I18n.available_locales}"
         if I18n.available_locales.include? string_locale
           Rails.logger.info "String locale detected"
           I18n.locale = string_locale
