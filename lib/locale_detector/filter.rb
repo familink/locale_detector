@@ -25,7 +25,7 @@ module LocaleDetector
           Rails.logger.info "Not detected"
           I18n.locale = I18n.default_locale
         end
-        #session[:locale] = locale
+        session[:locale] = locale
       else
         # set locale from http header or request host
         I18n.locale = begin
