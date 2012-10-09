@@ -95,12 +95,12 @@ module LocaleDetector
         :pt => :pt,
 
         # Spanish
-        :ar => :es,
-        :cl => :es,
-        :co => :es,
-        :cu => :es,
-        :es => :es,
-        :mx => :es,
+        :ar => :"es-CL",
+        :cl => :"es-CL",
+        :co => :"es-CL",
+        :cu => :"es-CL",
+        :es => :"es-CL",
+        :mx => :"es-CL",
 
         # All other languages
         :bg => :bg,
