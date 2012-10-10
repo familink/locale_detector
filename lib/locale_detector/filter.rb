@@ -12,7 +12,7 @@ module LocaleDetector
       if session[:locale].present?
         # set locale from session
         I18n.locale = session[:locale]
-      elsif cookie[:locale].present?
+      elsif cookies[:locale].present?
         I18n.locale = cookies[:locale]
       elsif params[:locale].present?
         find_locale_and_set_cookie(params[:locale])
