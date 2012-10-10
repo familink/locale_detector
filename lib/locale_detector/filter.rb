@@ -13,7 +13,7 @@ module LocaleDetector
         # set locale from session
         I18n.locale = session[:locale]
       elsif cookie[:locale].present?
-        I18n.locale = cookie[:locale]
+        I18n.locale = cookies[:locale]
       elsif params[:locale].present?
         find_locale_and_set_cookie(params[:locale])
       else
@@ -42,7 +42,7 @@ module LocaleDetector
         locale = sym
       end
       I18n.locale = locale
-      cookie[:locale] = locale
+      cookies[:locale] = locale
     end
 
     def country_to_language(country_code)
