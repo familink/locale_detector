@@ -9,8 +9,10 @@ module LocaleDetector
     protected
 
     def set_locale
+      Rails.logger.info "Setting locale"
       if session[:locale].present?
         # set locale from session
+        Rails.logger.info "Session locale present"
         I18n.locale = session[:locale]
       elsif cookies[:locale].present?
         I18n.locale = cookies[:locale]
