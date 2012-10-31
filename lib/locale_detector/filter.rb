@@ -13,10 +13,10 @@ module LocaleDetector
       if session[:locale].present?
         # set locale from session
         Rails.logger.info "Session locale present"
-        I18n.locale = session[:locale].to_sym
+        set_locale_if_exists(session[:locale])
       elsif cookies[:locale].present?
         Rails.logger.info "Cookie present"
-        I18n.locale = cookies[:locale].to_sym
+        set_locale_if_exists(cookies[:locale])
       elsif params[:locale].present?
         Rails.logger.info "Param present"
         find_locale_and_set_cookie(params[:locale])
@@ -38,14 +38,18 @@ module LocaleDetector
       Rails.logger.info "Locale set to #{I18n.locale}"
     end
 
-    def find_locale_and_set_cookie(possible_locale_name)
+    def set_locale_if_exists(possible_locale_name)
+      Rails.logger.info "Setting locale if exists " + possible_locale_name.to_s
       sym = possible_locale_name.to_sym
       locale = I18n.default_locale
-      
+
       if I18n.available_locales.include? sym
         locale = sym
       end
       I18n.locale = locale
+    end
+    def find_locale_and_set_cookie(possible_locale_name)
+      set_locale_if_exists(possible_locale_name)
       cookies[:locale] = locale
       Rails.logger.info "Cookie set to " + locale.to_s
     end
