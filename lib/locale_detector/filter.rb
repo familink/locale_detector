@@ -6,7 +6,7 @@ module LocaleDetector
       append_before_filter :set_locale
     end
 
-    protected
+    
 
     def set_locale
       Rails.logger.info "Locale detector"
@@ -31,7 +31,7 @@ module LocaleDetector
             raise "Incorrect format" unless x.first =~ /^[a-z\-]+$/i
             y.last.to_f <=> x.last.to_f
           end.first.first.gsub(/-[a-z]+$/i, '').downcase
-          find_locale_and_set_cookie(possible_locale_name)
+        find_locale_and_set_cookie(possible_locale_name)  
         rescue # rescue (anything) from the malformed (or missing) accept language headers
           Rails.logger.info "Not found neither, trying country_code"
           I18n.locale = country_to_language(request.host.split('.').last)
@@ -39,9 +39,9 @@ module LocaleDetector
       end
       Rails.logger.info "Locale set to #{I18n.locale}"
     end
-
+    protected
     def set_locale_if_exists(possible_locale_name)
-      Rails.logger.info "Setting locale if exists " + possible_locale_name.to_s
+      Rails.logger.info "Setting locale if exists (" + possible_locale_name.to_s + ") "
       sym = possible_locale_name.to_sym
       locale = I18n.default_locale
 
