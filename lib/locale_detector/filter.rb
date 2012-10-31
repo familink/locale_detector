@@ -9,7 +9,7 @@ module LocaleDetector
     protected
 
     def set_locale
-      Rails.logger.info "Setting locale"
+      Rails.logger.info "Locale detector"
       if session[:locale].present?
         # set locale from session
         Rails.logger.info "Session locale present"
@@ -22,6 +22,7 @@ module LocaleDetector
         find_locale_and_set_cookie(params[:locale])
       else
         # set locale from http header or request host
+        Rails.logger.info "No session, cookies or param, checking HTTP ACCEPT"
         possible_locale_name = begin
           request.env['HTTP_ACCEPT_LANGUAGE'].split(/\s*,\s*/).collect do |l|
             l += ';q=1.0' unless l =~ /;q=\d+\.\d+$/
@@ -32,6 +33,7 @@ module LocaleDetector
           end.first.first.gsub(/-[a-z]+$/i, '').downcase
           find_locale_and_set_cookie(possible_locale_name)
         rescue # rescue (anything) from the malformed (or missing) accept language headers
+          Rails.logger.info "Not found neither, trying country_code"
           I18n.locale = country_to_language(request.host.split('.').last)
         end
       end
